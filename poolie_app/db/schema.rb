@@ -10,18 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_30_204029) do
+ActiveRecord::Schema.define(version: 2019_09_30_210458) do
 
-  create_table "games", force: :cascade do |t|
+  create_table "ranked_games", force: :cascade do |t|
     t.integer "user_id"
+    t.boolean "win", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_games_on_user_id"
+    t.index ["user_id"], name: "index_ranked_games_on_user_id"
+  end
+
+  create_table "unranked_games", force: :cascade do |t|
+    t.integer "user_id"
+    t.boolean "win", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_unranked_games_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
+    t.integer "ranked_wins"
+    t.integer "ranked_losses"
+    t.integer "unranked_wins"
+    t.integer "unranked_losses"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
