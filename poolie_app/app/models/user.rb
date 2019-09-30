@@ -1,4 +1,5 @@
 class User < ApplicationRecord
     has_secure_password
-    has_many :games
+    has_many :ranked_games
+    has_many :unranked_games
 end
