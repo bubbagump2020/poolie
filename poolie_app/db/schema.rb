@@ -10,7 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_30_210458) do
+ActiveRecord::Schema.define(version: 2019_09_30_213830) do
+
+  create_table "ball_set_1s", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "ball_set_2s", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "eight_balls", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "player_aliases", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "table_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["table_id"], name: "index_player_aliases_on_table_id"
+    t.index ["user_id"], name: "index_player_aliases_on_user_id"
+  end
 
   create_table "ranked_games", force: :cascade do |t|
     t.integer "user_id"
@@ -18,6 +42,11 @@ ActiveRecord::Schema.define(version: 2019_09_30_210458) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_ranked_games_on_user_id"
+  end
+
+  create_table "tables", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "unranked_games", force: :cascade do |t|
