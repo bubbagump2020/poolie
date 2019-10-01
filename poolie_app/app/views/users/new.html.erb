@@ -1,0 +1,30 @@
+<!DOCYTYPE html>
+<html>
+<head></head>
+<body>
+<h1>Sign up
+</h1>
+</div>
+<div>
+    <h3>Please complete this form to create an account</h3>
+    <%= form_with(url: "", method: "POST") do |form| %>
+        <div>
+            <%= form.label :username %>
+            <%= form.text_field :username %>
+            <%= form.label :email %>
+            <%= form.email_field :email, placeholder: "Email" , required: true%>
+            </div>
+            <div>
+            <%= form.label :password %>
+            <%= form.password_field :password, placeholder: "Password" %>
+            <%= form.label :confirm_password%>
+            <%= form.password_field :password_confirmation, placeholder: "Confirm Password" %>
+            </div>
+        <%= form.submit("Sign Up") %>
+    <% end %>
+</div>
+<a href="/login">Login</a>
+
+
+</body>
+</html>
