@@ -7,9 +7,13 @@ function Ball(position, color) {
   this.velocity = new Vector2();
   this.moving = false;
   this.sprite = getBallSpriteByColor(color);
+  this.visible = true;
 }
 
 Ball.prototype.update = function(delta) {
+    if(!this.visible){
+        return;
+    }
   this.position.addTo(this.velocity.mult(delta));
   // friction, baby
   this.velocity = this.velocity.mult(0.985);
@@ -20,6 +24,9 @@ Ball.prototype.update = function(delta) {
 };
 
 Ball.prototype.draw = function() {
+    if(!this.visible){
+        return;
+    }
   Canvas.drawImage(this.sprite, this.position, BALL_ORIGIN);
 };
 
@@ -32,6 +39,10 @@ Ball.prototype.shoot = function(power, rotation) {
 };
 
 Ball.prototype.collideWithBall = function(ball){
+
+    if(!this.visible || !ball.visible){
+        return;
+    }
 
     // finding a normalish vector -- I'm no mathematician
   const normalVector = this.position.subtract(ball.position);
@@ -83,27 +94,52 @@ Ball.prototype.collideWithBall = function(ball){
 
 }
 
+Ball.prototype.pocketed = function(){
+
+    if(!this.visible){
+        return;
+    }
+    let inPocket = CONSTANTS.pockets.some(pocket => {
+        return this.position.distFrom(pocket) < CONSTANTS.pocketRadius;
+    });
+
+    if(!inPocket){
+        // console.log("pocketed");
+        return;
+    }
+
+    this.visible = false;
+    this.moving = false;
+}
+
 Ball.prototype.collideWithTable = function(table){
-    if(!this.moving){
+    if(!this.moving || !this.visible){
         return;
     }
     let collided = false;
 
     if(this.position.y <= table.TopY + BALL_RADIUS){
+        this.position.y = table.TopY + BALL_RADIUS;
         this.velocity = new Vector2(this.velocity.x, -this.velocity.y);
         collided = true;
     }
     if(this.position.x >= table.RightX - BALL_RADIUS){
+        this.position.x = table.RightX - BALL_RADIUS;
         this.velocity = new Vector2(-this.velocity.x, this.velocity.y);
         collided = true;
     }
     if(this.position.y >= table.BottomY - BALL_RADIUS){
+        this.position.y = table.BottomY - BALL_RADIUS
         this.velocity = new Vector2(this.velocity.x, -this.velocity.y);
         collided = true;
     }
     if(this.position.x <= table.LeftX + BALL_RADIUS){
+        this.position.x = table.LeftX + BALL_RADIUS
         this.velocity = new Vector2(-this.velocity.x, this.velocity.y);
         collided = true;
+    }
+    if(collided){
+        this.velocity = this.velocity.mult(0.98);
     }
 }
 

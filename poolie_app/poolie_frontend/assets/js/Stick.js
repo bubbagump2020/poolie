@@ -12,6 +12,9 @@ function Stick(position, onShoot) {
 }
 
 Stick.prototype.update = function() {
+    if(this.shot){
+        return;
+    }
   if (Mouse.left.down) {
     this.increasePower();
   } else if (this.power > 0) {
