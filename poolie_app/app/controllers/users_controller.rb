@@ -10,4 +10,8 @@ class UsersController < ApplicationController
         password: params[:password]
     })
    end
+
+   def show
+    @user_id = session[:id]
+   end
 end
