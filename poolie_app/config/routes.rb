@@ -5,4 +5,5 @@ Rails.application.routes.draw do
 
   get 'new-user' => 'users#new'
   post 'new-user' => 'users#create'
+  get 'user' => 'users#show'
 end
