@@ -35,6 +35,7 @@ function GameWorld() {
 
 GameWorld.prototype.handleCollisions = function() {
   for (let i = 0; i < this.balls.length; i++) {
+      this.balls[i].pocketed();
       this.balls[i].collideWith(this.table);
     for (let j = i + 1; j < this.balls.length; j++) {
       const firstBall = this.balls[i];
