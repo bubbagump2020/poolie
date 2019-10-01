@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+    <div>
+        <h2>Current Tables in Play</h2>
+        <% @tables.each do |table| %>
+            <p><%= table.table_name %>
+        <% end %>
+    </div>
+    <a href="/new-table">Make a new Table</a>
+    <a href="/user.<%= @user_id %>">User Page!</a>
+</body>
+</html>

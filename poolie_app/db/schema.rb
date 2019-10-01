@@ -45,6 +45,9 @@ ActiveRecord::Schema.define(version: 2019_09_30_213830) do
   end
 
   create_table "tables", force: :cascade do |t|
+    t.string "table_name"
+    t.boolean "multiplayer", default: false
+    t.boolean "ranked", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

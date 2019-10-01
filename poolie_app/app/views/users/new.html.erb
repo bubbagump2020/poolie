@@ -7,7 +7,7 @@
 </div>
 <div>
     <h3>Please complete this form to create an account</h3>
-    <%= form_with(url: "", method: "POST") do |form| %>
+    <%= form_with(url: "/new-user", method: "POST") do |form| %>
         <div>
             <%= form.label :username %>
             <%= form.text_field :username %>
