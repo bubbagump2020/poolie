@@ -13,7 +13,7 @@ Game.prototype.start = function() {
 
 Game.prototype.mainLoop = function() {
     Canvas.clear();
-    PoolGame.gameWorld.udpate();
+    PoolGame.gameWorld.update();
     PoolGame.gameWorld.draw();
     Mouse.reset();
     requestAnimationFrame(PoolGame.mainLoop);
