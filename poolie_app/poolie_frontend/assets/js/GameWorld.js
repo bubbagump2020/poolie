@@ -74,4 +74,5 @@ GameWorld.prototype.ballsMoving = function() {
     }
   }
   return ballsMoving;
-};
+}
+

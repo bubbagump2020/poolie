@@ -1,6 +1,7 @@
 const BALL_ORIGIN = new Vector2(25, 25);
 const BALL_DIAMETER = 38;
-const BALL_RADIUS = BALL_DIAMETER/2;
+const BALL_RADIUS = BALL_DIAMETER / 2;
+let scratched = false;
 
 function Ball(position, color) {
   this.position = position;
@@ -8,12 +9,19 @@ function Ball(position, color) {
   this.moving = false;
   this.sprite = getBallSpriteByColor(color);
   this.visible = true;
+  this.color = color;
+  this.inPocket = false;
 }
 
-Ball.prototype.update = function(delta) {
-    if(!this.visible){
-        return;
-    }
+Ball.prototype.update = function(delta, color) {
+  if (!this.visible || this.inPocket) {
+    return;
+  }
+  if (color === 4) {
+    this.position.x = Mouse.position.x;
+    this.position.y = Mouse.position.y;
+    //   return;
+  }
   this.position.addTo(this.velocity.mult(delta));
   // friction, baby
   this.velocity = this.velocity.mult(0.985);
@@ -24,9 +32,9 @@ Ball.prototype.update = function(delta) {
 };
 
 Ball.prototype.draw = function() {
-    if(!this.visible){
-        return;
-    }
+  if (!this.visible) {
+    return;
+  }
   Canvas.drawImage(this.sprite, this.position, BALL_ORIGIN);
 };
 
@@ -38,13 +46,12 @@ Ball.prototype.shoot = function(power, rotation) {
   this.moving = true;
 };
 
-Ball.prototype.collideWithBall = function(ball){
+Ball.prototype.collideWithBall = function(ball) {
+  if (!this.visible || !ball.visible) {
+    return;
+  }
 
-    if(!this.visible || !ball.visible){
-        return;
-    }
-
-    // finding a normalish vector -- I'm no mathematician
+  // finding a normalish vector -- I'm no mathematician
   const normalVector = this.position.subtract(ball.position);
   //   console.log("normal vectors!")
 
@@ -59,8 +66,8 @@ Ball.prototype.collideWithBall = function(ball){
   const minimumDistance = normalVector.mult((BALL_DIAMETER - dist) / dist);
 
   // maintain distance between balls
-  this.position = this.position.add(minimumDistance.mult(1/2));
-  ball.position = ball.position.subtract(minimumDistance.mult(1/2));
+  this.position = this.position.add(minimumDistance.mult(1 / 2));
+  ball.position = ball.position.subtract(minimumDistance.mult(1 / 2));
 
   // finding "unit normal vector"
   const unitNormal = normalVector.mult(1 / normalVector.length());
@@ -91,62 +98,81 @@ Ball.prototype.collideWithBall = function(ball){
 
   this.moving = true;
   ball.moving = true;
+};
 
-}
+Ball.prototype.pocketed = function() {
+  if (!this.visible) {
+    return;
+  }
+  let inPocket = CONSTANTS.pockets.some(pocket => {
+    return this.position.distFrom(pocket) < CONSTANTS.pocketRadius;
+  });
 
-Ball.prototype.pocketed = function(){
+  if (!inPocket) {
+    return;
+  }
 
-    if(!this.visible){
-        return;
-    }
-    let inPocket = CONSTANTS.pockets.some(pocket => {
-        return this.position.distFrom(pocket) < CONSTANTS.pocketRadius;
-    });
+  if (this.color === 3) {
+    console.log("8 ball logic here pls...");
+  }
 
-    if(!inPocket){
-        // console.log("pocketed");
-        return;
-    }
+  if (this.color === 4) {
+    // this.position = Mouse.position;
+    // this.velocity = Vector2(0, 0);
+    scratched = true;
+    this.inPocket = true;
+    this.scratch(this);
+    // this.moving = false;
+    return;
+  }
 
-    this.visible = false;
-    this.moving = false;
-}
+  this.visible = false;
+  this.moving = false;
+};
 
-Ball.prototype.collideWithTable = function(table){
-    if(!this.moving || !this.visible){
-        return;
-    }
-    let collided = false;
+Ball.prototype.collideWithTable = function(table) {
+  if (!this.moving || !this.visible) {
+    return;
+  }
+  let collided = false;
 
-    if(this.position.y <= table.TopY + BALL_RADIUS){
-        this.position.y = table.TopY + BALL_RADIUS;
-        this.velocity = new Vector2(this.velocity.x, -this.velocity.y);
-        collided = true;
-    }
-    if(this.position.x >= table.RightX - BALL_RADIUS){
-        this.position.x = table.RightX - BALL_RADIUS;
-        this.velocity = new Vector2(-this.velocity.x, this.velocity.y);
-        collided = true;
-    }
-    if(this.position.y >= table.BottomY - BALL_RADIUS){
-        this.position.y = table.BottomY - BALL_RADIUS
-        this.velocity = new Vector2(this.velocity.x, -this.velocity.y);
-        collided = true;
-    }
-    if(this.position.x <= table.LeftX + BALL_RADIUS){
-        this.position.x = table.LeftX + BALL_RADIUS
-        this.velocity = new Vector2(-this.velocity.x, this.velocity.y);
-        collided = true;
-    }
-    if(collided){
-        this.velocity = this.velocity.mult(0.98);
-    }
-}
+  if (this.position.y <= table.TopY + BALL_RADIUS) {
+    this.position.y = table.TopY + BALL_RADIUS;
+    this.velocity = new Vector2(this.velocity.x, -this.velocity.y);
+    collided = true;
+  }
+  if (this.position.x >= table.RightX - BALL_RADIUS) {
+    this.position.x = table.RightX - BALL_RADIUS;
+    this.velocity = new Vector2(-this.velocity.x, this.velocity.y);
+    collided = true;
+  }
+  if (this.position.y >= table.BottomY - BALL_RADIUS) {
+    this.position.y = table.BottomY - BALL_RADIUS;
+    this.velocity = new Vector2(this.velocity.x, -this.velocity.y);
+    collided = true;
+  }
+  if (this.position.x <= table.LeftX + BALL_RADIUS) {
+    this.position.x = table.LeftX + BALL_RADIUS;
+    this.velocity = new Vector2(-this.velocity.x, this.velocity.y);
+    collided = true;
+  }
+  if (collided) {
+    this.velocity = this.velocity.mult(0.98);
+  }
+};
 
 Ball.prototype.collideWith = function(object) {
- if(object instanceof Ball){
+  if (object instanceof Ball) {
     this.collideWithBall(object);
- } else {
-     this.collideWithTable(object);
- }
+  } else {
+    this.collideWithTable(object);
+  }
+};
+
+Ball.prototype.scratch = function(ball) {
+//   while (scratched) {
+//     setInterval(() => {
+//       console.log("hi"), 1000;
+//     });
+//   }
 };
