@@ -10,88 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_01_224234) do
+ActiveRecord::Schema.define(version: 2019_10_02_231001) do
 
-  create_table "ball_set_1s", force: :cascade do |t|
+  create_table "room_messages", force: :cascade do |t|
+    t.integer "room_id", null: false
+    t.integer "user_id", null: false
+    t.text "message"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["room_id"], name: "index_room_messages_on_room_id"
+    t.index ["user_id"], name: "index_room_messages_on_user_id"
   end
 
-  create_table "ball_set_2s", force: :cascade do |t|
+  create_table "rooms", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "comments", force: :cascade do |t|
-    t.integer "message_id"
-    t.integer "user_id"
-    t.text "content"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["message_id"], name: "index_comments_on_message_id"
-    t.index ["user_id"], name: "index_comments_on_user_id"
-  end
-
-  create_table "eight_balls", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "messages", force: :cascade do |t|
-    t.integer "user_id"
-    t.string "title"
-    t.text "content"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_messages_on_user_id"
-  end
-
-  create_table "player_aliases", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "table_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["table_id"], name: "index_player_aliases_on_table_id"
-    t.index ["user_id"], name: "index_player_aliases_on_user_id"
-  end
-
-  create_table "ranked_games", force: :cascade do |t|
-    t.integer "user_id"
-    t.boolean "win", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_ranked_games_on_user_id"
-  end
-
-  create_table "tables", force: :cascade do |t|
-    t.string "table_name"
-    t.boolean "multiplayer", default: false
-    t.boolean "ranked", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "unranked_games", force: :cascade do |t|
-    t.integer "user_id"
-    t.boolean "win", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_unranked_games_on_user_id"
+    t.index ["name"], name: "index_rooms_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username"
-    t.string "email"
-    t.string "password_digest"
-    t.integer "ranked_wins"
-    t.integer "ranked_losses"
-    t.integer "unranked_wins"
-    t.integer "unranked_losses"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.string "username", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  add_foreign_key "comments", "messages"
-  add_foreign_key "comments", "users"
-  add_foreign_key "messages", "users"
+  add_foreign_key "room_messages", "rooms"
+  add_foreign_key "room_messages", "users"
 end
