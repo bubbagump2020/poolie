@@ -1,4 +1,6 @@
 let loginForm = document.createElement("form");
+const BASE_URL = 'localhost:3000'
+const LOGIN_URL = `${BASE_URL}/login`
 loginForm.setAttribute('method',"post");
 loginForm.setAttribute('action',"submit.php");
 
@@ -17,3 +19,4 @@ f.appendChild(s);
 //and dont forget to add a submit button
 
 document.getElementsByTagName('body')[0].appendChild(f);
+

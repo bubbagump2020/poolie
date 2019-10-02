@@ -1,2 +1,0 @@
-class EightBall < ApplicationRecord
-end
