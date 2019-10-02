@@ -125,14 +125,18 @@ Ball.prototype.pocketed = function() {
   }
 
   if (this.color === 3) {
-    if(p1BallCount < 7 || p2BallCount < 7){
-      console.log('game over :(');
+    if(p1BallCount < 7 && p2BallCount < 7){
+      alert("Game Over!")
+      loadAssets(PoolGame.start)
+      // console.log('game over :(');
     };
     if(p1BallCount === 7){
-      console.log('player 1? WINS');
+      alert('player 1 WINS');
+      loadAssets(PoolGame.start)
     }
     if(p2BallCount === 7){
-      console.log('player 2? WINS');
+      alert('player 2 WINS');
+      loadAssets(PoolGame.start)
     }
   }
 
@@ -140,7 +144,6 @@ Ball.prototype.pocketed = function() {
     scratched = true;
     this.inPocket = true;
     this.scratch(this);
-    // this.moving = false;
     return;
   }
 
