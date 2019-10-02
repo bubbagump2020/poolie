@@ -2,6 +2,8 @@ const BALL_ORIGIN = new Vector2(25, 25);
 const BALL_DIAMETER = 38;
 const BALL_RADIUS = BALL_DIAMETER / 2;
 let scratched = false;
+let p1BallCount = 0;
+let p2BallCount = 0;
 
 function Ball(position, color) {
   this.position = position;
@@ -112,13 +114,29 @@ Ball.prototype.pocketed = function() {
     return;
   }
 
+  if (this.color === 1) {
+    p1BallCount++;
+    document.getElementById("p1Score").innerText = `Player 1: ${p1BallCount}`;
+  }
+
+  if (this.color === 2) {
+    p2BallCount++;
+    document.getElementById("p2Score").innerText = `Player 2: ${p2BallCount}`;
+  }
+
   if (this.color === 3) {
-    console.log("8 ball logic here pls...");
+    if(p1BallCount < 7 || p2BallCount < 7){
+      console.log('game over :(');
+    };
+    if(p1BallCount === 7){
+      console.log('player 1? WINS');
+    }
+    if(p2BallCount === 7){
+      console.log('player 2? WINS');
+    }
   }
 
   if (this.color === 4) {
-    // this.position = Mouse.position;
-    // this.velocity = Vector2(0, 0);
     scratched = true;
     this.inPocket = true;
     this.scratch(this);
@@ -175,7 +193,12 @@ Ball.prototype.scratch = function(ball) {
   }, 1000);
 
   function addListener() {
-    if (ball.position.x > 413) {
+    if (
+      ball.position.x > 413 ||
+      ball.position.x < PoolGame.gameWorld.table.LeftX + BALL_RADIUS ||
+      ball.position.y > PoolGame.gameWorld.table.BottomY - BALL_RADIUS ||
+      ball.position.y < PoolGame.gameWorld.table.TopY + BALL_RADIUS
+    ) {
       console.log("can't place it here");
     } else {
       clearInterval(scratchInterval);
