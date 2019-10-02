@@ -170,9 +170,21 @@ Ball.prototype.collideWith = function(object) {
 };
 
 Ball.prototype.scratch = function(ball) {
-//   while (scratched) {
-//     setInterval(() => {
-//       console.log("hi"), 1000;
-//     });
-//   }
+  const scratchInterval = setInterval(function() {
+    ball.position = Mouse.position;
+  }, 1000);
+
+  function addListener() {
+    clearInterval(scratchInterval);
+    console.log("clicked");
+    ball.position = Mouse.position;
+    scratched = false;
+    ball.inPocket = false;
+    ball.velocity = new Vector2();
+    ball.moving = false;
+    PoolGame.gameWorld.stick.power = 0;
+    PoolGame.gameWorld.stick.update();
+    document.removeEventListener("click", addListener);
+  }
+  document.addEventListener("click", addListener);
 };
