@@ -175,16 +175,20 @@ Ball.prototype.scratch = function(ball) {
   }, 1000);
 
   function addListener() {
-    clearInterval(scratchInterval);
-    console.log("clicked");
-    ball.position = Mouse.position;
-    scratched = false;
-    ball.inPocket = false;
-    ball.velocity = new Vector2();
-    ball.moving = false;
-    PoolGame.gameWorld.stick.power = 0;
-    PoolGame.gameWorld.stick.update();
-    document.removeEventListener("click", addListener);
+    if (ball.position.x > 413) {
+      console.log("can't place it here");
+    } else {
+      clearInterval(scratchInterval);
+      console.log("clicked");
+      ball.position = Mouse.position;
+      scratched = false;
+      ball.inPocket = false;
+      ball.velocity = new Vector2();
+      ball.moving = false;
+      PoolGame.gameWorld.stick.power = 0;
+      PoolGame.gameWorld.stick.update();
+      document.removeEventListener("click", addListener);
+    }
   }
   document.addEventListener("click", addListener);
 };
