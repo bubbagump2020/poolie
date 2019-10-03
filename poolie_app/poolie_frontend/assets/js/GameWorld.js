@@ -46,7 +46,6 @@ GameWorld.prototype.handleCollisions = function() {
 };
 
 GameWorld.prototype.update = function() {
-  // console.log(ballPocketed);
   this.handleCollisions();
   this.stick.update();
   for (let i = 0; i < this.balls.length; i++) {
@@ -54,9 +53,8 @@ GameWorld.prototype.update = function() {
   }
   if (!this.ballsMoving() && this.stick.shot) {
     this.stick.reposition(this.cueBall.position);
-  }
-  if (!ballPocketed) {
-    switchTurn();
+    console.log(ballPocketed);
+    turn.switchTurn();
   }
 };
 

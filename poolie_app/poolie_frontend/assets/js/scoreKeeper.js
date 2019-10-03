@@ -1,3 +1,5 @@
+let whoseTurn = "Player 1";
+
 let scoreDiv1 = document.createElement("div");
 let player1Score = document.createElement("h1");
 player1Score.setAttribute("id", "p1Score");
