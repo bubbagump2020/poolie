@@ -4,6 +4,9 @@ const BALL_RADIUS = BALL_DIAMETER / 2;
 let scratched = false;
 let p1BallCount = 0;
 let p2BallCount = 0;
+let p1BallColor = new Number();
+let p2BallColor = new Number();
+let firstBallColor = new Number();
 let ballPocketed = false;
 
 function Ball(position, color) {
@@ -116,30 +119,81 @@ Ball.prototype.pocketed = function() {
     return;
   }
 
+  if (PoolGame.gameWorld.balls.every(isVis)) {
+    console.log("first ball of game");
+    if (this.color === 1) {
+      if (whoseTurn === "Player 1") {
+        p1BallColor = 1;
+        p2BallColor = 2;
+      } else {
+        p1BallColor = 2;
+        p2BallColor = 1;
+      }
+    } else if (this.color === 2) {
+      if (whoseTurn === "Player 1") {
+        p1BallColor = 2;
+        p2BallColor = 1;
+      } else {
+        p1BallColor = 1;
+        p2BallColor = 2;
+      }
+    }
+  }
+
   if (this.color === 1) {
     ballPocketed = true;
-    p1BallCount++;
-    document.getElementById("p1Score").innerText = `Player 1: ${p1BallCount}`;
+    if (whoseTurn === "Player 1" && this.color === p1BallColor) {
+      p1BallCount++;
+      document.getElementById("p1Score").innerText = `Player 1: ${p1BallCount}`;
+    } else {
+      p2BallCount++;
+      ballPocketed = false;
+      turn.switchTurn();
+    }
+
+    if (whoseTurn === "Player 2" && this.color === p2BallColor) {
+      p2BallCount++;
+      document.getElementById("p2Score").innerText = `Player 2: ${p2BallCount}`;
+    } else {
+      p1BallCount++;
+      ballPocketed = false;
+      turn.switchTurn();
+    }
   }
 
   if (this.color === 2) {
     ballPocketed = true;
-    p2BallCount++;
-    document.getElementById("p2Score").innerText = `Player 2: ${p2BallCount}`;
+    if (whoseTurn === "Player 1" && this.color === p1BallColor) {
+      p1BallCount++;
+      document.getElementById("p1Score").innerText = `Player 1: ${p1BallCount}`;
+    } else {
+      p2BallCount++;
+      ballPocketed = false;
+      turn.switchTurn();
+    }
+
+    if (whoseTurn === "Player 2" && this.color === p2BallColor) {
+      p2BallCount++;
+      document.getElementById("p2Score").innerText = `Player 2: ${p2BallCount}`;
+    } else {
+      p1BallCount++;
+      ballPocketed = false;
+      turn.switchTurn();
+    }
   }
 
   if (this.color === 3) {
-    if(p1BallCount < 7 && p2BallCount < 7){
-      alert("Game Over!")
-      loadAssets(PoolGame.start)
-    };
-    if(p1BallCount === 7){
-      alert('player 1 WINS');
-      loadAssets(PoolGame.start)
+    if (p1BallCount < 7 && p2BallCount < 7) {
+      alert("Game Over!");
+      loadAssets(PoolGame.start);
     }
-    if(p2BallCount === 7){
-      alert('player 2 WINS');
-      loadAssets(PoolGame.start)
+    if (p1BallCount === 7) {
+      alert("player 1 WINS");
+      loadAssets(PoolGame.start);
+    }
+    if (p2BallCount === 7) {
+      alert("player 2 WINS");
+      loadAssets(PoolGame.start);
     }
   }
 
@@ -205,10 +259,9 @@ Ball.prototype.scratch = function(ball) {
       ball.position.y > PoolGame.gameWorld.table.BottomY - BALL_RADIUS ||
       ball.position.y < PoolGame.gameWorld.table.TopY + BALL_RADIUS
     ) {
-      console.log("can't place it here");
+      console.log("put the cue in the right spot goof");
     } else {
       clearInterval(scratchInterval);
-      console.log("clicked");
       ball.position = Mouse.position;
       scratched = false;
       ball.inPocket = false;
@@ -220,4 +273,8 @@ Ball.prototype.scratch = function(ball) {
     }
   }
   document.addEventListener("click", addListener);
+};
+
+let isVis = function(arrElement) {
+  return arrElement.visible === true;
 };
