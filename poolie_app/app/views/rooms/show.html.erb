@@ -8,13 +8,12 @@
   </div>
 
   <div class="col">
-    <div class="chat" data-channel-subscribe="room" daa-room-id="<%= @room.id %>">
+    <div class="chat" data-channel-subscribe="room" data-room-id="<%= @room.id %>">
       <% @room_messages.each do |room_message| %>
         <div class="chat-message-container">
           <div class="row no-gutters">
             <div class="col-auto text-center">
-            <img src="<%= room_message.user.gravatar_url %>" class="avatar" alt="">
-
+              <img src="<%= room_message.user.gravatar_url %>" class="avatar" alt="">
             </div>
 
             <div class="col">
@@ -41,7 +40,8 @@
                                  wrapper: false,
                                  label: false,
                                  input_html: {
-                                   class: 'chat-input'
+                                   class: 'chat-input',
+                                   autocomplete: 'off'
                                  } %>
         <div class="input-group-append">
           <%= form.submit "Send", class: 'btn btn-primary chat-input' %>
@@ -62,10 +62,13 @@
 
       <div class="col">
         <div class="message-content">
-          <p class="mb-1" data-role="message-text"></p>
+          <p class="mb-1" data-role="message-text">
+
+          </p>
 
           <div class="text-right">
-            <small data-role="message-date"></small>
+            <small data-role="message-date">
+            </small>
           </div>
         </div>
       </div>
