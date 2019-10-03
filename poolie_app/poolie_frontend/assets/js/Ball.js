@@ -4,6 +4,7 @@ const BALL_RADIUS = BALL_DIAMETER / 2;
 let scratched = false;
 let p1BallCount = 0;
 let p2BallCount = 0;
+let ballPocketed = false;
 
 function Ball(position, color) {
   this.position = position;
@@ -46,6 +47,7 @@ Ball.prototype.shoot = function(power, rotation) {
     power * Math.sin(rotation)
   );
   this.moving = true;
+  ballPocketed = false;
 };
 
 Ball.prototype.collideWithBall = function(ball) {
@@ -115,11 +117,13 @@ Ball.prototype.pocketed = function() {
   }
 
   if (this.color === 1) {
+    ballPocketed = true;
     p1BallCount++;
     document.getElementById("p1Score").innerText = `Player 1: ${p1BallCount}`;
   }
 
   if (this.color === 2) {
+    ballPocketed = true;
     p2BallCount++;
     document.getElementById("p2Score").innerText = `Player 2: ${p2BallCount}`;
   }
@@ -128,7 +132,6 @@ Ball.prototype.pocketed = function() {
     if(p1BallCount < 7 && p2BallCount < 7){
       alert("Game Over!")
       loadAssets(PoolGame.start)
-      // console.log('game over :(');
     };
     if(p1BallCount === 7){
       alert('player 1 WINS');

@@ -26,17 +26,17 @@ function GameWorld() {
     this.cueBall.shoot.bind(this.cueBall)
   );
   this.table = {
-      TopY: 57,
-      RightX: 1443,
-      BottomY: 768,
-      LeftX: 57
-  }
+    TopY: 57,
+    RightX: 1443,
+    BottomY: 768,
+    LeftX: 57
+  };
 }
 
 GameWorld.prototype.handleCollisions = function() {
   for (let i = 0; i < this.balls.length; i++) {
-      this.balls[i].pocketed();
-      this.balls[i].collideWith(this.table);
+    this.balls[i].pocketed();
+    this.balls[i].collideWith(this.table);
     for (let j = i + 1; j < this.balls.length; j++) {
       const firstBall = this.balls[i];
       const secondBall = this.balls[j];
@@ -46,6 +46,7 @@ GameWorld.prototype.handleCollisions = function() {
 };
 
 GameWorld.prototype.update = function() {
+  // console.log(ballPocketed);
   this.handleCollisions();
   this.stick.update();
   for (let i = 0; i < this.balls.length; i++) {
@@ -53,6 +54,9 @@ GameWorld.prototype.update = function() {
   }
   if (!this.ballsMoving() && this.stick.shot) {
     this.stick.reposition(this.cueBall.position);
+  }
+  if (!ballPocketed) {
+    switchTurn();
   }
 };
 
@@ -74,5 +78,4 @@ GameWorld.prototype.ballsMoving = function() {
     }
   }
   return ballsMoving;
-}
-
+};
