@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>RailsChatTutorial</title>
+    <title>POOLIE</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
+    <style>
+      .container {
+        background-color: rgba(0,0,0,0.3);
+        /* height: 100vh; */
+        /* flex: 1; */
+        /* flex-direction: column; */
+        height: calc(100vh - 56px);
+      }
+
+    </style>
   </head>
 
   <body>
+   <%= render partial: 'shared/navigation_bar' %>
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <%= render partial: 'shared/navigation_bar' %>
+         
           <div class="my-3">
             <%= yield %>
           </div>
