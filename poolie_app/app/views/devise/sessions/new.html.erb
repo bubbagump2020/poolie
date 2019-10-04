@@ -1,7 +1,27 @@
-<h2>Log in</h2>
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+  body {
+         background-image: url("https://res.cloudinary.com/spothopper/image/fetch/f_auto,q_80,c_fit,h_864/http://static.spotapps.co/spots/ca/0c05f0950911e8afe7b52bc6a705c7/:original");
+         margin-left: auto;
+         margin-right: auto;
+         background-repeat: no-repeat;
+         background-size: cover;
+                  }
+
+
+</style>
+
+
+
+</head> 
+<body>
+<h1  style="color:red;">LOG IN!</h1>
 
 <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="form-inputs">
+  <div class="form-inputs" style="color:white;">
     <%= f.input :email,
                 required: false,
                 autofocus: true,
@@ -18,3 +38,5 @@
 <% end %>
 
 <%= render "devise/shared/links" %>
+</body>
+</html>
